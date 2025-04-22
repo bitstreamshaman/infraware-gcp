@@ -50,13 +50,11 @@ async def confirm_diagrams(
                 "error": "User rejected the diagrams"
             }
             
-        # Update job status to confirmed
+        # after confirming
         await job_service.update_job(job_id, {
-            "status": JobStatus.CONFIRMED,
-            "updated_at": datetime.utcnow(),
-            "message": "User confirmed diagrams, generating Terraform...",
-            "feedback": request.feedback
+            "yaml_content": job["yaml_url"],  # or fetch from GCS if needed
         })
+
         
         # Start background processing for Terraform generation
         background_tasks.add_task(
